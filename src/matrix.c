@@ -30,10 +30,10 @@ int SparseMatrix(int **M, int **S, int *D)
     // Next spot in sparse matrix.
     int spot = 0;
 
-    // Iterate through to find nonzero elements.
-    for (int row = 0; row < *(D + 1); row++)
+    // Iterate through to find non zero elements.
+    for (int row = 0; row < *D; row++)
     {
-        for (int col = 0; col < *D; col++)
+        for (int col = 0; col < *(D + 1); col++)
         {
             if (*(*(M + row) + col) != 0)
             {
@@ -81,13 +81,13 @@ int Addition(int **M, int **N, int **A, int *D)
     // Case 1: M and N have the same dimensions.
     if (colM == colN && rowM == rowN)
     {
-        // A's dimensions are bigger than M and N.
-        if (colA > colM || rowA > rowM)
-            return 2;
-
         // A's dimensions are smaller than M and N.
-        else if (colA < colM || rowA < rowM)
+        if (colA < colM || rowA < rowM)
             return -3;
+
+        // A's dimensions are bigger than M and N.
+        else if (colA > colM || rowA > rowM)
+            return 2;
 
         // A's dimensions are the same as M and N.
         else
@@ -147,21 +147,15 @@ int Multiplication(int **M, int **N, int **A, int *D)
     {
         // A has compatable dimensions with M and N.
         if (rowA == rowM && colA == colN)
-        {
             return 1;
-        }
 
         // A has bigger dimensions than M and N.
         else if (rowA > rowM && colA > colN)
-        {
             return 2;
-        }
 
         // A has smaller dimensions than M and N.
         else
-        {
             return -3;
-        }
     }
 
     // M and N are not compatible.
@@ -169,15 +163,11 @@ int Multiplication(int **M, int **N, int **A, int *D)
     {
         // A has bigger dimensions than M and N.
         if (rowA >= rowM && colA >= colN)
-        {
             return -1;
-        }
 
         // A has smaller dimensions than M and N.
         else
-        {
             return -2;
-        }
     }
 }
 
@@ -204,21 +194,15 @@ int Transpose(int **A, int **AT, int *D)
 
     // AT dimensions are the same as A.
     if (rowA == colAT && colA == rowAT)
-    {
         return 1;
-    }
 
     // AT dimensions are bigger than A.
     else if (rowA < colAT && colA < rowAT)
-    {
         return 2;
-    }
 
     // AT dimensions are smaller than A.
     else
-    {
         return -1;
-    }
 }
 
 // Helper functions for Testing
@@ -246,16 +230,4 @@ void freeMatrix(int n, int **M)
         free(M[i]);
     }
     free(M);
-}
-
-void printMatrix(int n, int m, int **M)
-{
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            printf("%d ", *(*(M + i) + j));
-        }
-        printf("\n");
-    }
 }
